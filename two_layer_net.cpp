@@ -1,7 +1,7 @@
 #include<iostream>
 #include<math.h>
-#include<stdlib.h>
-#include<random>
+#include <stdlib.h>
+#include <random>
 
 using namespace std;
 
