@@ -76,7 +76,7 @@ void mat_element_wise_multiply(double** a1,double** a2,int m1,int n1,int m2,int 
 	for(i = 0;i<m1;i++){
         for(j = 0;j<n1;j++){
         	mul[i][j]=a1[i][j]*a2[i][j];
-    	}    
+    	}
 	}
 }
 double array_sum(double *arr,int n){
@@ -125,7 +125,7 @@ void mat_multiply(double** a1,double** a2,int m1,int n1,int m2,int n2,double** m
             for(k = 0; k < n1;k++){
                 matmul[i][j] += a1[i][k] * a2[k][j];
             }
-    	}    
+    	}
 	}
 	printf("In matmul\n");
 	print_mat(matmul,m1,n2);
@@ -142,7 +142,7 @@ void relu(double** a1,int m1,int n1,double** act){
             else{
             	act[i][j]=a1[i][j];
             }
-    	}    
+    	}
 	}
 }
 
@@ -256,7 +256,7 @@ class TwoLayerNet{
 	    relu(z1,num_inputs,hidden_size,a1);
 	    printf("relu 3 done:::\n");
 		print_mat(a1,num_inputs,hidden_size);
-		
+
 	    // scores = a1.dot(W2) + b2
 	    double **mul2=(double**)malloc(num_inputs*sizeof(double*));
 		for(int i=0;i<num_inputs;i++)
@@ -292,17 +292,17 @@ class TwoLayerNet{
 		print_mat(probs,num_inputs,output_size);
 
 	    //corect_logprobs = -np.log(probs[range(N), y])
-	    
+
 	    double *corect_logprobs=new double[num_inputs];
-	    
+
 	    for(i=0;i<num_inputs;i++){
 	    	corect_logprobs[i]=-log(probs[i][y[i]]);
 	    }//now shape of corect_logprobs=number of inputs;
-	   
+
 	    //data_loss = np.sum(corect_logprobs) / N
 	    double data_loss=sum(corect_logprobs,num_inputs)/num_inputs;
 	  	printf("data_loss=%lf\n",data_loss);
-	    
+
 	    //reg_loss = 0.5 * reg * np.sum(W1 * W1) + 0.5 * reg * np.sum(W2 * W2)
 		double **elemul1=(double**)malloc(input_size*sizeof(double*));
 		for(int i=0;i<num_inputs;i++)
@@ -324,12 +324,12 @@ class TwoLayerNet{
 		print_mat(elemul2,hidden_size,output_size);
 
 	    double reg_loss=0.5*reg*mat_sum(elemul1,input_size,hidden_size)+0.5*reg*mat_sum(elemul2,hidden_size,output_size);
-	    
+
 	    double loss_f = data_loss + reg_loss;
-	    
+
 	    cout<<"data_loss="<<data_loss<<" reg_loss="<<reg_loss<<" loss_f="<<loss_f<<endl;
 	    //Backward pass: compute gradients
-	    
+
 	    //dscores = probs
 	    //dscores[range(N),y] -= 1
 	    //dscores /= N
@@ -362,7 +362,7 @@ class TwoLayerNet{
 		transpose(a1,num_inputs,hidden_size,transa1);
 		mat_multiply(transa1,dscores,hidden_size,num_inputs,num_inputs,output_size,grads_W2);
 		//grads_W2=&mul3;
-	    
+
 	    //double *rowsum=(double*)malloc(num_inputs*sizeof(double*));
 	    mat_row_wise_sum(dscores,num_inputs,output_size,grads_b2);
 	    printf("mat_rw wise sum 9 done:::\n");
@@ -471,11 +471,11 @@ int main(){
 	for(int i=0;i<num_inputs;i++){
 		printf("%d ",y[i]);
 	}
-	
+
 	//print_mat(X,num_inputs,input_size);//print_mat(net.W1,input_size,hidden_size);print_mat(net.W2,hidden_size,output_size);
 	double loss=net.loss(0.1,grads_W1,grads_W2,grads_b1,grads_b2,X,output_size,y,hidden_size);
 	double correct_loss = 1.30378789133;
 	cout<<"difference between your loss and correct loss is::"<<loss-correct_loss;
-	
+
 	return 0;
 }

@@ -1,5 +1,5 @@
-#include<iostream>
-#include<math.h>
+#include <iostream>
+#include <math.h>
 #include <stdlib.h>
 #include <random>
 
@@ -76,7 +76,7 @@ double** mat_element_wise_multiply(double** a1,double** a2,int m1,int n1,int m2,
 	for(i = 0;i<m1;i++){
         for(j = 0;j<n1;j++){
         	mul[i][j]=a1[i][j]*a2[i][j];
-    	}    
+    	}
 	}
 	return mul;
 }
@@ -133,7 +133,7 @@ double** mat_multiply(double** a1,double** a2,int m1,int n1,int m2,int n2){
             for(k = 0; k < n1;k++){
                 mul[i][j] += a1[i][k] * a2[k][j];
             }
-    	}    
+    	}
 	}
 	return mul;
 }
@@ -152,7 +152,7 @@ double** relu(double** a1,int m1,int n1){
             else{
             	act[i][j]=a1[i][j];
             }
-    	}    
+    	}
 	}
 	return act;
 }
@@ -222,24 +222,24 @@ double TwoLayerNet::loss(double reg,double **grads_W1,double **grads_W2,double *
 
     double **probs=softmax(score,num_inputs,output_size);
     //corect_logprobs = -np.log(probs[range(N), y])
-    
+
     double *corect_logprobs=new double[num_inputs];
-    
+
     for(i=0;i<num_inputs;i++){
     	corect_logprobs[i]=-log(probs[i][y[i]]);
     }//now shape of corect_logprobs=number of inputs;
-    
+
     //data_loss = np.sum(corect_logprobs) / N
     double data_loss=sum(corect_logprobs,num_inputs)/num_inputs;
-    
+
     //reg_loss = 0.5 * reg * np.sum(W1 * W1) + 0.5 * reg * np.sum(W2 * W2)
     double reg_loss=0.5*reg*mat_sum(mat_element_wise_multiply(W1,W1,input_size,hidden_size,input_size,hidden_size),input_size,hidden_size)+
     			0.5*reg*mat_sum(mat_element_wise_multiply(W2,W2,hidden_size,output_size,hidden_size,output_size),hidden_size,output_size);
-    
+
     double loss_f = data_loss + reg_loss;
-    
+
     //Backward pass: compute gradients
-    
+
     //dscores = probs
     //dscores[range(N),y] -= 1
     //dscores /= N
@@ -252,7 +252,7 @@ double TwoLayerNet::loss(double reg,double **grads_W1,double **grads_W2,double *
     		dscores[i][j]/=num_inputs;
     	}
     }
-    
+
     //grads['W2'] = np.dot(a1.T, dscores)
     //grads['b2'] = np.sum(dscores, axis=0) i.e. row wise sum
     grads_W2=mat_multiply(transpose(a1,num_inputs,hidden_units),dscores,hidden_units,num_inputs,num_inputs,output_size);
@@ -272,7 +272,7 @@ double TwoLayerNet::loss(double reg,double **grads_W1,double **grads_W2,double *
     //grads['b1'] = np.sum(dhidden, axis=0)
     grads_W1=mat_multiply(transpose(X,num_inputs,input_size),dhidden,num_inputs,input_size,input_size,hidden_units);
     grads_b1=mat_row_wise_sum(dhidden,num_inputs,hidden_units);
-    
+
     //add regularization gradient contribution
     //grads['W2'] += reg * W2
     //grads['W1'] += reg * W1
@@ -286,7 +286,7 @@ double TwoLayerNet::loss(double reg,double **grads_W1,double **grads_W2,double *
     		grads_W1[i][j]+=W1[i][j]*reg;
     	}
     }
-    
+
     return loss_f;
 }
 
@@ -299,6 +299,6 @@ int main(){
 	double loss=net.loss(0.1,grads_W1,grads_W2,grads_W2,grads_b1,grads_b2);
 	double correct_loss = 1.30378789133;
 	cout<<"difference between your loss and correct loss is::"<<loss-correct_loss;
-	
+
 	return 0;
 }
